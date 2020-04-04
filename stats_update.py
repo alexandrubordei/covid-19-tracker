@@ -76,12 +76,12 @@ def update_romanian_stats():
 
     ax[4].set_title("total cases since 100th case (log scale)")
     ax[4].set_xlabel("days since 100th case")
-    ax[4].set_ylabel("total deaths (log scale)")
+    ax[4].set_ylabel("total cases (log scale)")
     ax[4].set_yscale("log")
 
     ax[5].set_title("total cases since 100th case per 1000 inhabitants")
     ax[5].set_xlabel("days since 100th case")
-    ax[5].set_ylabel("total deaths per 1000 inhabitants (log scale)")
+    ax[5].set_ylabel("total cases per 1000 inhabitants (log scale)")
     ax[5].set_yscale("log")
 
     #ax[2].set_yscale("log")
