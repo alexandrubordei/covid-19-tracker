@@ -1,0 +1,3 @@
+from stats_update import update_romanian_stats
+
+update_romanian_stats()
