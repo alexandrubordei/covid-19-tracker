@@ -34,20 +34,23 @@ def update_romanian_stats():
         
         dayWith100thcase=c[c.index==c[c['total_cases'].gt(100)].index[0]].dateRep
         c["days_since_100thcase"]=c.apply(lambda r: (r["dateRep"]-dayWith100thcase), axis=1)
-        c2=c[c.days_since_100thcase > timedelta(0)]
+        
+        c2=c[c.days_since_100thcase > timedelta(0)].copy()
+        c2["days_since_100thcase_int"]=c2.days_since_100thcase.astype('timedelta64[D]').astype(int)
         
         linewidth=1
         markersize=6
         if country=="Romania":
             linewidth=3
             markersize=10
-            
+        
         ax[0].plot(c.dateRep, c.cases/c.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
         ax[1].plot(c.dateRep, c.deaths/c.popData2018*1000, linewidth=linewidth, marker=".",  markersize=markersize)
         ax[2].plot(c.dateRep, c.total_cases/c.popData2018*1000, linewidth=linewidth, marker=".",   markersize=markersize)
         ax[3].plot(c.dateRep, c.total_deaths/c.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
-        ax[4].plot(c2.days_since_100thcase, c2.total_cases, linewidth=linewidth, marker=".", markersize=markersize)
-        ax[5].plot(c2.days_since_100thcase, c2.total_cases/c2.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
+        ax[4].plot(c2.days_since_100thcase_int, c2.total_cases, linewidth=linewidth, marker=".", markersize=markersize)
+        ax[5].plot(c2.days_since_100thcase_int, c2.total_cases/c2.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
+
 
 
 
