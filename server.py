@@ -4,7 +4,7 @@ from os import curdir, sep,environ
 from stats_update import update_romanian_stats
 
 PORT = int(environ.get("PORT", 5000))
-
+STATS_PNG_NAME="static/romania_stats.png"
 
 #This class will handles any incoming request from
 #the browser 
@@ -17,7 +17,7 @@ class myHandler(http.server.SimpleHTTPRequestHandler):
 
 		try:
 			if self.path=="/update":
-				update_romanian_stats()
+				update_romanian_stats(STATS_PNG_NAME)
 				self.path="/updated.html"
 		except Exception as e:
 			print(e)
