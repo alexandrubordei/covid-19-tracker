@@ -1,2 +1,4 @@
 pandas
 matplotlib
+google-cloud-storage
+google-api-python-client

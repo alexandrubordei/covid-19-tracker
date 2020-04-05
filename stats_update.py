@@ -9,7 +9,7 @@ from datetime import date,timedelta
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 
-def update_romanian_stats():
+def update_romanian_stats(destination_path):
 
     # In[2]:
 
@@ -93,7 +93,7 @@ def update_romanian_stats():
     for i in range(0,6):
         ax[i].legend(countries)
 
-    fig.savefig("static/romania_stats.png",bbox_inches='tight')
+    fig.savefig(destination_path, bbox_inches='tight')
 
 
 

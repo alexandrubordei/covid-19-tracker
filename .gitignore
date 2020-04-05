@@ -1,3 +1,7 @@
 .pyc
 *.pyc
 .ipynb_checkpoints/*
+covid-19-5cb329f8e093.json
+google-creds.json
+__pycache__
+
