@@ -1,6 +1,6 @@
 from stats_update import update_romanian_stats
 from os import environ,sep, curdir
-from upload import save_file_from_environ, upload_blob
+from upload import save_file_from_environ,upload_blob
 
 CREDS_ENV_KEY="GOOGLE_CREDS"
 CREDS_FILE=curdir+sep+"google-creds.json"

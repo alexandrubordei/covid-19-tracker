@@ -17,15 +17,30 @@ def update_romanian_stats(destination_path):
     url="http://opendata.ecdc.europa.eu/covid19/casedistribution/csv/"
     df2=pd.read_csv(url, parse_dates=["dateRep"], dayfirst=True)
 
+    
 
     # In[3]:
 
 
     df=df2[(df2.dateRep<pd.Timestamp(date.today()- timedelta(days = 1))) & (df2.dateRep>pd.Timestamp('2020-02-15'))].sort_values(by=["dateRep"], ascending=True)
 
+
+    eu=["Austria","Italy","Belgium","Latvia","Bulgaria","Lithuania","Croatia","Luxembourg","Cyprus","Malta",
+             "Czechia","Netherlands","Denmark","Poland","Estonia","Portugal","Finland","Romania","France",
+             "Slovakia","Germany","Slovenia","Greece","Spain","Hungary","Sweden"]
+
+    eudf=df[df.countriesAndTerritories.isin(eu)].copy()
+
+    eu_dateRep=eudf.groupby("dateRep").dateRep.nth(1) 
+    eu_cases=eudf.groupby("dateRep").cases.agg('sum')
+    eu_deaths=eudf.groupby("dateRep").deaths.agg('sum')
+    eu_pop=eudf.groupby("dateRep").popData2018.agg('sum')
+    eudf2=pd.DataFrame({"countriesAndTerritories":"EU (taken as a whole)","cases":eu_cases, "deaths":eu_deaths ,"popData2018":eu_pop}).reset_index()
+    df=df.append(eudf2, ignore_index = True, sort = True)
+
     fig, ax= plt.subplots(6, figsize=(15, 30), dpi=80, facecolor='w', edgecolor='k')
 
-    countries= ["Romania","Italy","Germany","United_States_of_America","Spain","United_Kingdom"]
+    countries= ["Romania","Italy","Germany","United_States_of_America","Spain","United_Kingdom","Greece","EU (taken as a whole)"]
 
     for country in countries:
         c=df[df.countriesAndTerritories==country].copy()
