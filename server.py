@@ -1,10 +1,16 @@
 import http.server
 import socketserver
-from os import curdir, sep,environ
-from stats_update import update_romanian_stats
+from os import curdir, sep,environ, path
+from update import update_and_upload
+from jinja2 import Template, Environment,FileSystemLoader
 
 PORT = int(environ.get("PORT", 5000))
-STATS_PNG_NAME="static/romania_stats.png"
+
+TEMPLATES_DIR = curdir+sep+"templates"
+STATIC_DIR= curdir+sep+"static"
+
+STATS_PNG_NAME = STATIC_DIR+sep+"romania_stats.png"
+TEMPLATE_SUFFIX=".tmpl"
 
 #This class will handles any incoming request from
 #the browser 
@@ -12,13 +18,16 @@ class myHandler(http.server.SimpleHTTPRequestHandler):
 
 	#Handler for the GET requests
 	def do_GET(self):
+		
+
 		if self.path=="/":
 			self.path="/index.html"
 
 		try:
 			if self.path=="/update":
-				update_romanian_stats(STATS_PNG_NAME)
+				update_and_upload()
 				self.path="/updated.html"
+
 		except Exception as e:
 			print(e)
 			self.send_error(500,'Internal error')
@@ -42,13 +51,30 @@ class myHandler(http.server.SimpleHTTPRequestHandler):
 				sendReply = True
 
 			if sendReply == True:
-				#Open the static file requested and send it
-				f = open(curdir+sep+"static" + sep + self.path,"rb") 
-				self.send_response(200)
-				self.send_header('Content-type',mimetype)
-				self.end_headers()
-				self.wfile.write(f.read())
-				f.close()
+				p = STATIC_DIR + sep + self.path
+				
+				if path.exists(p):
+					#Open the static file requested and send it
+					f = open(p,"rb") 
+					self.send_response(200)
+					self.send_header('Content-type',mimetype)
+					self.end_headers()
+					self.wfile.write(f.read())
+					f.close()
+
+				else:
+					tmpl = TEMPLATES_DIR + self.path + TEMPLATE_SUFFIX
+					
+					if self.path.endswith(".html") and path.exists(tmpl):
+						print("in")
+						env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+						template = env.get_template(self.path + TEMPLATE_SUFFIX)
+						output = template.render()
+						self.send_response(200)
+						self.send_header('Content-type',mimetype)
+						self.end_headers()
+						self.wfile.write(output.encode('utf-8'))
+
 			return
 
 
