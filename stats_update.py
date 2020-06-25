@@ -34,8 +34,8 @@ def update_romanian_stats(destination_path):
     eu_dateRep=eudf.groupby("dateRep").dateRep.nth(1) 
     eu_cases=eudf.groupby("dateRep").cases.agg('sum')
     eu_deaths=eudf.groupby("dateRep").deaths.agg('sum')
-    eu_pop=eudf.groupby("dateRep").popData2018.agg('sum')
-    eudf2=pd.DataFrame({"countriesAndTerritories":"EU (taken as a whole)","cases":eu_cases, "deaths":eu_deaths ,"popData2018":eu_pop}).reset_index()
+    eu_pop=eudf.groupby("dateRep").popData2019.agg('sum')
+    eudf2=pd.DataFrame({"countriesAndTerritories":"EU (taken as a whole)","cases":eu_cases, "deaths":eu_deaths ,"popData2019":eu_pop}).reset_index()
     df=df.append(eudf2, ignore_index = True, sort = True)
 
         
@@ -55,7 +55,7 @@ def update_romanian_stats(destination_path):
     linewidth=3
     markersize=10
 
-    ax[0].plot(c.dateRep, c.cases/c.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
+    ax[0].plot(c.dateRep, c.cases/c.popData2019*1000, linewidth=linewidth, marker=".", markersize=markersize)
     ax[1].plot(c2.days_since_100thcase_int, c2.total_cases, linewidth=linewidth, marker=".", markersize=markersize)
         
 
@@ -78,12 +78,12 @@ def update_romanian_stats(destination_path):
             linewidth=3
             markersize=10
         
-        ax[2].plot(c.dateRep, c.cases/c.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
-        ax[3].plot(c.dateRep, c.deaths/c.popData2018*1000, linewidth=linewidth, marker=".",  markersize=markersize)
-        ax[4].plot(c.dateRep, c.total_cases/c.popData2018*1000, linewidth=linewidth, marker=".",   markersize=markersize)
-        ax[5].plot(c.dateRep, c.total_deaths/c.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
+        ax[2].plot(c.dateRep, c.cases/c.popData2019*1000, linewidth=linewidth, marker=".", markersize=markersize)
+        ax[3].plot(c.dateRep, c.deaths/c.popData2019*1000, linewidth=linewidth, marker=".",  markersize=markersize)
+        ax[4].plot(c.dateRep, c.total_cases/c.popData2019*1000, linewidth=linewidth, marker=".",   markersize=markersize)
+        ax[5].plot(c.dateRep, c.total_deaths/c.popData2019*1000, linewidth=linewidth, marker=".", markersize=markersize)
         ax[6].plot(c2.days_since_100thcase_int, c2.total_cases, linewidth=linewidth, marker=".", markersize=markersize)
-        ax[7].plot(c2.days_since_100thcase_int, c2.total_cases/c2.popData2018*1000, linewidth=linewidth, marker=".", markersize=markersize)
+        ax[7].plot(c2.days_since_100thcase_int, c2.total_cases/c2.popData2019*1000, linewidth=linewidth, marker=".", markersize=markersize)
 
 
 
