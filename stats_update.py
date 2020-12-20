@@ -32,8 +32,8 @@ def update_romanian_stats(destination_path):
     eudf=df[df.countriesAndTerritories.isin(eu)].copy()
 
     eu_dateRep=eudf.groupby("dateRep").dateRep.nth(1) 
-    eu_cases=eudf.groupby("dateRep").cases.agg('sum')
-    eu_deaths=eudf.groupby("dateRep").deaths.agg('sum')
+    eu_cases=eudf.groupby("dateRep").cases_weekly.agg('sum')
+    eu_deaths=eudf.groupby("dateRep").deaths_weekly.agg('sum')
     eu_pop=eudf.groupby("dateRep").popData2019.agg('sum')
     eudf2=pd.DataFrame({"countriesAndTerritories":"EU (taken as a whole)","cases":eu_cases, "deaths":eu_deaths ,"popData2019":eu_pop}).reset_index()
     df=df.append(eudf2, ignore_index = True, sort = True)
@@ -42,8 +42,8 @@ def update_romanian_stats(destination_path):
     fig, ax= plt.subplots(8, figsize=(15, 40), dpi=80, facecolor='w', edgecolor='k')
 
     c=df[df.countriesAndTerritories=="Romania"].copy()
-    c["total_cases"]=c.cases.cumsum()
-    c["total_deaths"]=c.deaths.cumsum()
+    c["total_cases"]=c.cases_weekly.cumsum()
+    c["total_deaths"]=c.deaths_weekly.cumsum()
 
     dayWith100thcase=c[c.index==c[c['total_cases'].gt(100)].index[0]].dateRep
     c["days_since_100thcase"]=c.apply(lambda r: (r["dateRep"]-dayWith100thcase), axis=1)
@@ -63,8 +63,8 @@ def update_romanian_stats(destination_path):
 
     for country in countries:
         c=df[df.countriesAndTerritories==country].copy()
-        c["total_cases"]=c.cases.cumsum()
-        c["total_deaths"]=c.deaths.cumsum()
+        c["total_cases"]=c.cases_weekly.cumsum()
+        c["total_deaths"]=c.deaths_weekly.cumsum()
         
         dayWith100thcase=c[c.index==c[c['total_cases'].gt(100)].index[0]].dateRep
         c["days_since_100thcase"]=c.apply(lambda r: (r["dateRep"]-dayWith100thcase), axis=1)
